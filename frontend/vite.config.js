@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // Dev only – proxy API calls to local backend
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
@@ -20,5 +21,10 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  build: {
+    outDir: 'dist',
+    // Inline assets below 4kb, externalize the rest
+    assetsInlineLimit: 4096,
   },
 })

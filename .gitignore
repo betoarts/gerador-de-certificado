@@ -1,1 +1,42 @@
+# Agent
 /.agent
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
+frontend/dist/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Generated / uploaded files (not committed – use Docker volumes)
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/outputs/*
+!backend/outputs/.gitkeep
+backend/data/*.db
+backend/data/*.sqlite
+backend/assets/backgrounds/*
+backend/assets/logos/*
+backend/assets/signatures/*
+
+# Logs
+*.log
+debug_headers.log
+
+# Test data
+test_zip.zip
+test_zip.js
+backend/test-data.xlsx
+backend/create-test-data.js
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.bat

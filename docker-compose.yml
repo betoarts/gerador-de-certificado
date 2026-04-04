@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: certificado-pro
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      # Opcional: defina a URL do frontend se usar domínio próprio
+      # - FRONTEND_URL=https://seu-dominio.com
+    volumes:
+      # Persistir uploads, certificados gerados e banco de dados
+      - cert_uploads:/app/backend/uploads
+      - cert_outputs:/app/backend/outputs
+      - cert_assets:/app/backend/assets
+      - cert_data:/app/backend/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  cert_uploads:
+  cert_outputs:
+  cert_assets:
+  cert_data:
