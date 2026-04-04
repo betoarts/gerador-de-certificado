@@ -17,7 +17,8 @@
     body {
       width: 297mm;
       height: 210mm;
-      font-family: '{{bodyFontFamily}}', 'Inter', sans-serif;
+      font-family: {{bodyFontFamily}}, "Inter", sans-serif;
+      font-weight: {{bodyFontWeight}};
       color: {{textColor}};
       overflow: hidden;
     }
@@ -120,9 +121,9 @@
 
     /* Title */
     .certificate-title {
-      font-family: '{{fontFamily}}', 'Playfair Display', serif;
+      font-family: {{fontFamily}}, "Playfair Display", serif;
       font-size: 28pt;
-      font-weight: 700;
+      font-weight: {{titleFontWeight}};
       color: {{primaryColor}};
       letter-spacing: 4px;
       text-transform: uppercase;
@@ -154,7 +155,7 @@
 
     /* Name */
     .participant-name {
-      font-family: '{{fontFamily}}', 'Playfair Display', serif;
+      font-family: {{fontFamily}}, "Playfair Display", serif;
       font-size: 32pt;
       font-weight: 800;
       color: {{secondaryColor}};
@@ -280,7 +281,7 @@
 
     .course-content-title {
       font-family: '{{fontFamily}}', 'Playfair Display', serif;
-      font-size: 20pt;
+      font-size: 35pt;
       color: {{primaryColor}};
       margin-bottom: 15mm;
       text-transform: uppercase;
@@ -336,7 +337,9 @@
       </div>
 
       <!-- Name -->
+      {{#if showParticipantName}}
       <div class="participant-name">{{nome}}</div>
+      {{/if}}
 
       <!-- Description -->
       <div class="certificate-description">

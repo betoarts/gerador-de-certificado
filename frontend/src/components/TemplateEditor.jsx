@@ -140,11 +140,52 @@ export default function TemplateEditor({ records, templateConfig, onConfigChange
                   <option value="Inter">Inter (Moderna)</option>
                   <option value="Georgia">Georgia (Serifada)</option>
                   <option value="Times New Roman">Times New Roman (Formal)</option>
+                  <option value="Arial, sans-serif">Arial</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="label">Peso da Fonte do Título</label>
+                <select className="input-field" value={templateConfig.titleFontWeight || '700'} onChange={(e) => updateConfig('titleFontWeight', e.target.value)}>
+                  <option value="400">Normal (400)</option>
+                  <option value="500">Médio (500)</option>
+                  <option value="600">Seminegrito (600)</option>
+                  <option value="700">Negrito (700)</option>
+                  <option value="800">Extra Negrito (800)</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="label">Fonte do Corpo</label>
+                <select className="input-field" value={templateConfig.bodyFontFamily || 'Inter'} onChange={(e) => updateConfig('bodyFontFamily', e.target.value)}>
+                  <option value="Inter">Inter (Moderna)</option>
+                  <option value="Playfair Display">Playfair Display (Clássica)</option>
+                  <option value="Georgia">Georgia (Serifada)</option>
+                  <option value="Times New Roman">Times New Roman (Formal)</option>
+                  <option value="Arial, sans-serif">Arial</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="label">Peso da Fonte do Corpo</label>
+                <select className="input-field" value={templateConfig.bodyFontWeight || '400'} onChange={(e) => updateConfig('bodyFontWeight', e.target.value)}>
+                  <option value="300">Leve (300)</option>
+                  <option value="400">Normal (400)</option>
+                  <option value="500">Médio (500)</option>
+                  <option value="600">Seminegrito (600)</option>
+                  <option value="700">Negrito (700)</option>
                 </select>
               </div>
               <div className="form-group">
                 <label className="label">Texto do Título</label>
                 <input type="text" className="input-field" value={templateConfig.titleText} onChange={(e) => updateConfig('titleText', e.target.value)} />
+              </div>
+              <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+                <input 
+                  type="checkbox" 
+                  id="showParticipantName" 
+                  checked={templateConfig.showParticipantName !== false} 
+                  onChange={(e) => updateConfig('showParticipantName', e.target.checked)} 
+                  style={{ width: '1.2rem', height: '1.2rem', accentColor: 'var(--color-primary)' }}
+                />
+                <label htmlFor="showParticipantName" className="label" style={{ marginBottom: 0, cursor: 'pointer' }}>Exibir Nome Principal do Aluno</label>
               </div>
             </div>
           )}

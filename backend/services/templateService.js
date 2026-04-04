@@ -20,6 +20,8 @@ function buildCertificateHtml(data, templateConfig = {}) {
     logoImage = '',
     signatureImage = '',
     courseContent = '',
+    titleFontWeight = '700',
+    bodyFontWeight = '400',
   } = templateConfig;
 
   // Build description with data
@@ -39,6 +41,7 @@ function buildCertificateHtml(data, templateConfig = {}) {
     signatureImage,
     showBorders: !backgroundImage,
     courseContent: !!formattedCourseContent,
+    showParticipantName: templateConfig.showParticipantName !== false,
   };
   const condRegex = /\{\{#if (\w+)\}\}((?:(?!\{\{#if)[\s\S])*?)\{\{\/if\}\}/g;
   let prevHtml;
@@ -71,6 +74,8 @@ function buildCertificateHtml(data, templateConfig = {}) {
     '{{signatureImage}}': signatureImage,
     '{{courseContent}}': formattedCourseContent,
     '{{cpf}}': data.cpf || '',
+    '{{titleFontWeight}}': titleFontWeight,
+    '{{bodyFontWeight}}': bodyFontWeight,
   };
 
   for (const [key, value] of Object.entries(replacements)) {
