@@ -1,0 +1,32 @@
+# Gerador de Certificados Pro
+
+## Overview
+Full-stack application for automated PDF certificate generation from Excel files. Built with React 19, Node.js (Express), and Puppeteer. Features a real-time template editor, custom design system, QR code tracking, and ZIP batch processing.
+
+## Tech Stack
+- **Frontend**: React 19, Vite 8, React Router DOM 7, Lucide-React, Axios.
+- **Backend**: Node.js, Express, Puppeteer (PDF rendering), ExcelJS, Archiver, better-sqlite3.
+- **Styling**: CSS3 Vanilla (Custom Properties), HSL colors.
+
+## Key Components
+- `FileUpload.jsx`: Excel upload and validation.
+- `DataPreview.jsx`: List and filter imported records.
+- `TemplateEditor.jsx`: UI for certificate styling (colors, fonts, assets).
+- `GenerationProgress.jsx`: Async generation with progress tracking.
+- `DownloadPanel.jsx`: Logic for batch and individual PDF downloads.
+- `pdfService.js`: Core Puppeteer PDF rendering engine.
+- `zipService.js`: Robust ZIP creation for large batches (Windows-optimized).
+
+## API Endpoints
+- `POST /api/upload`: Excel processing.
+- `POST /api/upload/assets`: Image management.
+- `POST /api/certificates/generate`: Bulk generation.
+- `GET /api/validate/:code`: Certificate authentication.
+
+## Scripts
+- `install.bat`: Full dependency install.
+- `start.bat`: Parallel dev server boot.
+
+## Design System
+- **Colors**: Deep Navy (#0a0e1a), Gold (#e8a838), Midnight (#1a1a2e).
+- **Typography**: Playfair Display (Titles), Inter (Body).
