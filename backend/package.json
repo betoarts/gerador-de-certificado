@@ -1,0 +1,24 @@
+{
+  "name": "certificado-generator-backend",
+  "version": "1.0.0",
+  "description": "Backend para geração automática de certificados em PDF",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "exceljs": "^4.4.0",
+    "puppeteer": "^23.5.0",
+    "qrcode": "^1.5.4",
+    "nanoid": "^5.0.7",
+    "archiver": "^7.0.1",
+    "better-sqlite3": "^11.3.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "sanitize-html": "^2.13.0"
+  }
+}

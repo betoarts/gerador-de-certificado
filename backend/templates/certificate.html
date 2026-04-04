@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    body {
+      width: 297mm;
+      height: 210mm;
+      font-family: '{{bodyFontFamily}}', 'Inter', sans-serif;
+      color: {{textColor}};
+      overflow: hidden;
+    }
+
+    .certificate {
+      width: 297mm;
+      height: 210mm;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    /* Background Image */
+    .certificate-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+    }
+
+    .certificate-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+
+    /* Decorative Border */
+    .certificate-border {
+      position: absolute;
+      top: 8mm; left: 8mm; right: 8mm; bottom: 8mm;
+      border: 2px solid {{primaryColor}};
+      z-index: 1;
+    }
+
+    .certificate-border::before {
+      content: '';
+      position: absolute;
+      top: 3mm; left: 3mm; right: 3mm; bottom: 3mm;
+      border: 0.5px solid {{primaryColor}};
+      opacity: 0.4;
+    }
+
+    /* Corner Decorations */
+    .corner {
+      position: absolute;
+      width: 25mm;
+      height: 25mm;
+      z-index: 2;
+    }
+
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: {{primaryColor}};
+    }
+
+    .corner-tl { top: 12mm; left: 12mm; }
+    .corner-tl::before { top: 0; left: 0; width: 25mm; height: 1px; }
+    .corner-tl::after { top: 0; left: 0; width: 1px; height: 25mm; }
+
+    .corner-tr { top: 12mm; right: 12mm; }
+    .corner-tr::before { top: 0; right: 0; width: 25mm; height: 1px; }
+    .corner-tr::after { top: 0; right: 0; width: 1px; height: 25mm; }
+
+    .corner-bl { bottom: 12mm; left: 12mm; }
+    .corner-bl::before { bottom: 0; left: 0; width: 25mm; height: 1px; }
+    .corner-bl::after { bottom: 0; left: 0; width: 1px; height: 25mm; }
+
+    .corner-br { bottom: 12mm; right: 12mm; }
+    .corner-br::before { bottom: 0; right: 0; width: 25mm; height: 1px; }
+    .corner-br::after { bottom: 0; right: 0; width: 1px; height: 25mm; }
+
+    /* Content */
+    .certificate-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20mm 30mm;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Logo */
+    .logo-container {
+      margin-bottom: 6mm;
+    }
+
+    .logo-container img {
+      max-height: 18mm;
+      max-width: 60mm;
+      object-fit: contain;
+    }
+
+    /* Title */
+    .certificate-title {
+      font-family: '{{fontFamily}}', 'Playfair Display', serif;
+      font-size: 28pt;
+      font-weight: 700;
+      color: {{primaryColor}};
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 3mm;
+      line-height: 1.2;
+    }
+
+    .title-ornament {
+      display: flex;
+      align-items: center;
+      gap: 4mm;
+      margin-bottom: 8mm;
+    }
+
+    .ornament-line {
+      width: 30mm;
+      height: 0.5px;
+      background: {{primaryColor}};
+      opacity: 0.6;
+    }
+
+    .ornament-diamond {
+      width: 3mm;
+      height: 3mm;
+      background: {{primaryColor}};
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* Name */
+    .participant-name {
+      font-family: '{{fontFamily}}', 'Playfair Display', serif;
+      font-size: 32pt;
+      font-weight: 800;
+      color: {{secondaryColor}};
+      margin: 4mm 0;
+      line-height: 1.3;
+      max-width: 220mm;
+      word-wrap: break-word;
+    }
+
+    /* Description */
+    .certificate-description {
+      font-size: 11pt;
+      line-height: 1.8;
+      color: {{textColor}};
+      max-width: 200mm;
+      margin: 6mm 0 10mm;
+      font-weight: 300;
+    }
+
+    .certificate-description strong {
+      font-weight: 600;
+      color: {{secondaryColor}};
+    }
+
+    /* Footer */
+    .certificate-footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 240mm;
+      margin-top: auto;
+      padding-top: 6mm;
+    }
+
+    /* QR Code */
+    .qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1mm;
+    }
+
+    .qr-section img {
+      width: 22mm;
+      height: 22mm;
+    }
+
+    .qr-code-label {
+      font-size: 6pt;
+      color: {{textColor}};
+      opacity: 0.5;
+      letter-spacing: 0.5px;
+    }
+
+    .certificate-code {
+      font-family: 'Inter', monospace;
+      font-size: 7pt;
+      color: {{textColor}};
+      opacity: 0.6;
+      letter-spacing: 1px;
+    }
+
+    /* Signature */
+    .signature-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1mm;
+    }
+
+    .signature-image {
+      max-height: 15mm;
+      max-width: 50mm;
+      object-fit: contain;
+      margin-bottom: 1mm;
+    }
+
+    .signature-line {
+      width: 55mm;
+      height: 0.5px;
+      background: {{secondaryColor}};
+      margin-bottom: 1mm;
+    }
+
+    .signature-name {
+      font-size: 10pt;
+      font-weight: 600;
+      color: {{secondaryColor}};
+    }
+
+    .signature-title {
+      font-size: 8pt;
+      color: {{textColor}};
+      opacity: 0.7;
+    }
+
+    /* Date Section */
+    .date-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .date-text {
+      font-size: 9pt;
+      color: {{textColor}};
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <!-- Background -->
+    <div class="certificate-bg">
+      {{#if backgroundImage}}
+      <img src="{{backgroundImage}}" alt="background" />
+      {{/if}}
+    </div>
+
+    <!-- Border (hidden when background image is set) -->
+    {{#if showBorders}}
+    <div class="certificate-border"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    {{/if}}
+
+    <!-- Content -->
+    <div class="certificate-content">
+      <!-- Logo -->
+      <div class="logo-container">
+        {{#if logoImage}}
+        <img src="{{logoImage}}" alt="Logo" />
+        {{/if}}
+      </div>
+
+      <!-- Title -->
+      <div class="certificate-title">{{titleText}}</div>
+
+      <div class="title-ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond"></div>
+        <div class="ornament-line"></div>
+      </div>
+
+      <!-- Name -->
+      <div class="participant-name">{{nome}}</div>
+
+      <!-- Description -->
+      <div class="certificate-description">
+        {{descriptionText}}
+      </div>
+
+      <!-- Footer -->
+      <div class="certificate-footer">
+        <!-- QR Code -->
+        <div class="qr-section">
+          <img src="{{qrcode}}" alt="QR Code de Validação" />
+          <span class="qr-code-label">VALIDAR CERTIFICADO</span>
+          <span class="certificate-code">{{codigo}}</span>
+        </div>
+
+        <!-- Signature -->
+        <div class="signature-section">
+          {{#if signatureImage}}
+          <img src="{{signatureImage}}" alt="Assinatura" class="signature-image" />
+          {{/if}}
+          <div class="signature-line"></div>
+          <div class="signature-name">{{signatureName}}</div>
+          <div class="signature-title">{{signatureTitle}}</div>
+        </div>
+
+        <!-- Date -->
+        <div class="date-section">
+          <div class="date-text">{{data}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
