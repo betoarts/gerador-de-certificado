@@ -264,6 +264,39 @@
       color: {{textColor}};
       opacity: 0.7;
     }
+
+    /* Course Content Page */
+    .course-content-page {
+      width: 297mm;
+      height: 210mm;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      padding: 30mm 40mm;
+      page-break-before: always;
+      box-sizing: border-box;
+    }
+
+    .course-content-title {
+      font-family: '{{fontFamily}}', 'Playfair Display', serif;
+      font-size: 20pt;
+      color: {{primaryColor}};
+      margin-bottom: 15mm;
+      text-transform: uppercase;
+      text-align: center;
+      border-bottom: 1px solid {{primaryColor}};
+      padding-bottom: 6mm;
+    }
+
+    .course-content-body {
+      font-size: 11pt;
+      line-height: 1.8;
+      color: {{textColor}};
+      columns: 2;
+      column-gap: 20mm;
+      text-align: justify;
+    }
   </style>
 </head>
 <body>
@@ -333,8 +366,24 @@
         <div class="date-section">
           <div class="date-text">{{data}}</div>
         </div>
+
+        <!-- Student Signature -->
+        <div class="signature-section">
+          <div class="signature-line" style="margin-top: 16mm;"></div>
+          <div class="signature-name">{{nome}}</div>
+          <div class="signature-title">Assinatura do(a) Aluno(a)</div>
+        </div>
       </div>
     </div>
   </div>
+
+  {{#if courseContent}}
+  <div class="course-content-page">
+    <h2 class="course-content-title">Conteúdo Programático</h2>
+    <div class="course-content-body">
+      {{courseContent}}
+    </div>
+  </div>
+  {{/if}}
 </body>
 </html>

@@ -19,6 +19,7 @@ function buildCertificateHtml(data, templateConfig = {}) {
     backgroundImage = '',
     logoImage = '',
     signatureImage = '',
+    courseContent = '',
   } = templateConfig;
 
   // Build description with data
@@ -27,6 +28,9 @@ function buildCertificateHtml(data, templateConfig = {}) {
   finalDescription = finalDescription.replace(/\{\{curso\}\}/g, data.curso || '');
   finalDescription = finalDescription.replace(/\{\{data\}\}/g, data.data_conclusao || '');
   finalDescription = finalDescription.replace(/\{\{carga_horaria\}\}/g, data.carga_horaria || '');
+  finalDescription = finalDescription.replace(/\{\{cpf\}\}/g, data.cpf || '');
+
+  const formattedCourseContent = courseContent || '';
 
   // Handle conditional blocks {{#if var}}...{{/if}} (process innermost first)
   const condValues = {
@@ -34,6 +38,7 @@ function buildCertificateHtml(data, templateConfig = {}) {
     logoImage,
     signatureImage,
     showBorders: !backgroundImage,
+    courseContent: !!formattedCourseContent,
   };
   const condRegex = /\{\{#if (\w+)\}\}((?:(?!\{\{#if)[\s\S])*?)\{\{\/if\}\}/g;
   let prevHtml;
@@ -64,6 +69,8 @@ function buildCertificateHtml(data, templateConfig = {}) {
     '{{backgroundImage}}': backgroundImage,
     '{{logoImage}}': logoImage,
     '{{signatureImage}}': signatureImage,
+    '{{courseContent}}': formattedCourseContent,
+    '{{cpf}}': data.cpf || '',
   };
 
   for (const [key, value] of Object.entries(replacements)) {

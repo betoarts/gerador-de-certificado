@@ -39,6 +39,7 @@ export default function DataPreview({ records, errors, onProceed, onBack }) {
             <tr>
               <th>#</th>
               <th>Nome</th>
+              <th>CPF</th>
               <th>Curso</th>
               <th>Data de Conclusão</th>
               <th>Carga Horária</th>
@@ -49,6 +50,7 @@ export default function DataPreview({ records, errors, onProceed, onBack }) {
               <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{record.nome}</td>
+                <td>{record.cpf || '-'}</td>
                 <td>{record.curso}</td>
                 <td>{record.data_conclusao}</td>
                 <td>{record.carga_horaria}</td>

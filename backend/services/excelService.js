@@ -1,5 +1,6 @@
 const ExcelJS = require('exceljs');
 const path = require('path');
+const fs = require('fs');
 
 const REQUIRED_COLUMNS = ['Nome', 'Curso', 'Data de Conclusão', 'Carga Horária'];
 
@@ -22,11 +23,32 @@ const COLUMN_ALIASES = {
   'carga': 'Carga Horária',
   'horas': 'Carga Horária',
   'hours': 'Carga Horária',
+  'cpf': 'CPF',
+  'conteudo do curso': 'Conteudo do curso',
+  'conteúdo do curso': 'Conteudo do curso',
+  'conteudo': 'Conteudo do curso'
 };
 
+function getCellValueText(value) {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object') {
+    if (value.richText) return value.richText.map(rt => rt.text).join('');
+    if (value.result !== undefined) return value.result;
+    if (value.text) return value.text;
+    if (value instanceof Date) return value;
+  }
+  return value;
+}
+
 function normalizeColumnName(name) {
-  if (!name) return null;
-  const normalized = String(name).trim().toLowerCase();
+  const nameText = getCellValueText(name);
+  if (!nameText) return null;
+  const normalized = String(nameText).trim().toLowerCase();
+  
+  if (normalized.includes('cpf') || normalized.includes('documento')) {
+    return 'CPF';
+  }
+  
   return COLUMN_ALIASES[normalized] || null;
 }
 
@@ -45,7 +67,14 @@ async function parseExcel(filePath) {
   const foundColumns = [];
 
   headerRow.eachCell((cell, colNumber) => {
+    const rawVal = getCellValueText(cell.value);
     const normalized = normalizeColumnName(cell.value);
+    
+    // Log the raw value for debugging
+    try {
+      fs.appendFileSync(path.join(__dirname, '../debug_headers.log'), `Col ${colNumber}: Raw="${rawVal}", Norm="${normalized}"\n`);
+    } catch(e) {}
+
     if (normalized) {
       columnMap[normalized] = colNumber;
       foundColumns.push(normalized);
@@ -57,7 +86,7 @@ async function parseExcel(filePath) {
   if (missingColumns.length > 0) {
     throw new Error(
       `Colunas obrigatórias não encontradas: ${missingColumns.join(', ')}. ` +
-      `Colunas encontradas: ${headerRow.values?.filter(Boolean).join(', ') || 'nenhuma'}`
+      `Colunas encontradas: ${headerRow.values?.filter(Boolean).map(getCellValueText).join(', ') || 'nenhuma'}`
     );
   }
 
@@ -70,10 +99,11 @@ async function parseExcel(filePath) {
 
     const record = {
       row: rowNumber,
-      nome: sanitizeText(row.getCell(columnMap['Nome']).value),
-      curso: sanitizeText(row.getCell(columnMap['Curso']).value),
-      data_conclusao: formatDate(row.getCell(columnMap['Data de Conclusão']).value),
-      carga_horaria: sanitizeText(row.getCell(columnMap['Carga Horária']).value),
+      nome: sanitizeText(getCellValueText(row.getCell(columnMap['Nome']).value)),
+      curso: sanitizeText(getCellValueText(row.getCell(columnMap['Curso']).value)),
+      data_conclusao: formatDate(getCellValueText(row.getCell(columnMap['Data de Conclusão']).value)),
+      carga_horaria: sanitizeText(getCellValueText(row.getCell(columnMap['Carga Horária']).value)),
+      cpf: columnMap['CPF'] ? sanitizeText(getCellValueText(row.getCell(columnMap['CPF']).value)) : '',
     };
 
     // Validate record
@@ -91,6 +121,15 @@ async function parseExcel(filePath) {
     total: data.length,
     hasErrors: errors.length > 0,
   };
+}
+
+function sanitizeHtml(value) {
+  if (value === null || value === undefined) return '';
+  let text = String(value).trim();
+  text = text.replace(/<[^>]*>/g, '');
+  text = text.replace(/javascript:/gi, '');
+  text = text.replace(/on\w+=/gi, '');
+  return text;
 }
 
 function sanitizeText(value) {

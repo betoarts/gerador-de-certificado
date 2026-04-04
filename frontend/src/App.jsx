@@ -21,12 +21,13 @@ function CertificateApp() {
     fontFamily: 'Playfair Display',
     bodyFontFamily: 'Inter',
     titleText: 'CERTIFICADO DE CONCLUSÃO',
-    descriptionTemplate: 'Certificamos que <strong>{{nome}}</strong> concluiu com êxito o curso de <strong>{{curso}}</strong>, com carga horária de <strong>{{carga_horaria}} horas</strong>, concluído em <strong>{{data}}</strong>.',
+    descriptionTemplate: 'Certificamos que <strong>{{nome}}</strong>, portador do CPF <strong>{{cpf}}</strong>, concluiu com êxito o curso de <strong>{{curso}}</strong>, com carga horária de <strong>{{carga_horaria}} horas</strong>, concluído em <strong>{{data}}</strong>.',
     signatureName: 'Diretor(a) de Ensino',
     signatureTitle: 'Coordenação Acadêmica',
     backgroundImage: '',
     logoImage: '',
     signatureImage: '',
+    courseContent: '',
   })
   const [generatedCertificates, setGeneratedCertificates] = useState([])
   const [zipName, setZipName] = useState(null)

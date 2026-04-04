@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Palette, Type, Image, FileSignature, ArrowLeft, Wand2, Upload as UploadIcon, X, Eye, ChevronDown } from 'lucide-react'
+import { Palette, Type, Image, FileSignature, ArrowLeft, Wand2, Upload as UploadIcon, X, Eye, ChevronDown, FileText } from 'lucide-react'
 import { getPreview, uploadAsset } from '../services/api'
+import RichTextEditor from './RichTextEditor'
 
 const CERT_WIDTH = 1122
 const CERT_HEIGHT = 793
@@ -9,7 +10,7 @@ export default function TemplateEditor({ records, templateConfig, onConfigChange
   const [previewHtml, setPreviewHtml] = useState('')
   const [isLoadingPreview, setIsLoadingPreview] = useState(false)
   const [previewScale, setPreviewScale] = useState(0.5)
-  const [openSections, setOpenSections] = useState({ cores: true, tipografia: false, imagens: false, assinatura: false, texto: false })
+  const [openSections, setOpenSections] = useState({ cores: true, tipografia: false, imagens: false, assinatura: false, texto: false, verso: false })
   const iframeRef = useRef(null)
   const previewContainerRef = useRef(null)
   const bgInputRef = useRef(null)
@@ -256,13 +257,34 @@ export default function TemplateEditor({ records, templateConfig, onConfigChange
           {openSections.texto && (
             <div className="editor-section-body">
               <div className="form-group">
-                <label className="label">Texto do certificado (use {'{{nome}}'}, {'{{curso}}'}, {'{{data}}'}, {'{{carga_horaria}}'})</label>
+                <label className="label">Texto do certificado (use {'{{nome}}'}, {'{{curso}}'}, {'{{data}}'}, {'{{carga_horaria}}'}, {'{{cpf}}'})</label>
                 <textarea
                   className="input-field"
                   rows={3}
                   value={templateConfig.descriptionTemplate}
                   onChange={(e) => updateConfig('descriptionTemplate', e.target.value)}
                   style={{ resize: 'vertical' }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Course Content / Verso */}
+        <div className="editor-section">
+          <div className="editor-section-header" onClick={() => toggleSection('verso')}>
+            <FileText size={14} />
+            <h3>Verso (Conteúdo)</h3>
+            <ChevronDown size={14} className={`toggle-icon ${openSections.verso ? 'open' : ''}`} />
+          </div>
+          {openSections.verso && (
+            <div className="editor-section-body">
+              <div className="form-group">
+                <label className="label">Conteúdo Programático do Curso</label>
+                <RichTextEditor
+                  value={templateConfig.courseContent}
+                  onChange={(val) => updateConfig('courseContent', val)}
+                  placeholder="Ao inserir texto aqui, uma 2ª página (verso) será gerada. Você pode usar negrito e listas."
                 />
               </div>
             </div>
