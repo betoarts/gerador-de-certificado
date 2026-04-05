@@ -2,51 +2,65 @@
 
 Uma aplicação completa de ponta a ponta para geração automatizada de certificados em PDF a partir de planilhas Excel. Ideal para cursos, workshops e eventos educacionais.
 
-[![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20SQLite-blue)](https://github.com/humbertomouraneto/gerador-de-certificado)
+[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20SQLite-blue)](https://github.com/humbertomouraneto) [![Docker](https://img.shields.io/badge/Deploy-Docker%20%7C%20Easypanel-2496ED?logo=docker)](https://easypanel.io)
 
 ---
 
-## 🚀 Guia Rápido (Quick Start)
+## 🚀 Início Rápido (Desenvolvimento Local — Windows)
 
-Para rodar a aplicação localmente no Windows:
+```bash
+# 1. Instalar dependências (frontend e backend)
+install.bat
 
-1.  **Instalação**: Execute o arquivo `install.bat` para instalar todas as dependências do Frontend e Backend.
-2.  **Iniciar**: Execute o arquivo `start.bat`.
-    -   O **Backend** rodará em: `http://localhost:3001`
-    -   O **Frontend** rodará em: `http://localhost:5173` (ou porta alternativa mostrada no terminal).
+# 2. Iniciar a aplicação
+start.bat
+```
+
+| Serviço | URL |
+|---|---|
+| Frontend (React) | `http://localhost:5173` |
+| Backend (API) | `http://localhost:3001` |
 
 > [!TIP]
-> Para acesso via rede local (celular ou outro PC), o Vite está configurado para expor o servidor via `--host`. Utilize o IP mostrado no terminal do Frontend.
+> Acesso via **rede local** (celular/outro PC): o Vite está configurado com `--host`. Utilize o IP exibido no terminal do Frontend.
 
 ---
 
-## ✨ Funcionalidades Principais
+## ✨ Funcionalidades
 
 | Recurso | Descrição |
-| :--- | :--- |
-| **Upload Excel** | Suporte a arquivos `.xlsx` com mapeamento dinâmico de colunas. |
-| **Editor Visual** | Personalização de cores, fontes e upload de logos, assinaturas e fundos. |
-| **Preview em Real-Time** | Visualize o certificado exatamente como será gerado. |
-| **QR Code & Tracking** | Cada certificado possui um QR Code único e código de validação. |
-| **Download em Lote** | Geração ultrarrápida com opção de download consolidado em arquivo ZIP. |
-| **Validação Online** | Página dedicada para verificação de autenticidade (`/validar`). |
+|:---|:---|
+| **Upload Excel** | Suporte a `.xlsx` com mapeamento dinâmico de colunas (Nome, CPF, Curso, Carga Horária, Data) |
+| **Editor Visual** | Personalização completa: cores, fontes, peso tipográfico, logos, assinatura e fundo |
+| **Tipografia Avançada** | Suporte a **Playfair Display**, **Inter**, **Arial** com controle de peso (300–800) para títulos e corpo |
+| **Nome do Aluno Opcional** | Toggle para exibir ou ocultar o nome em destaque no certificado |
+| **Editor de Conteúdo** | Mini rich-text editor para o verso do certificado (negrito, itálico, listas) |
+| **Preview em Tempo Real** | Visualização HTML do certificado antes da geração em PDF |
+| **QR Code & Tracking** | Código único por certificado com QR Code embutido para validação online |
+| **Download em Lote** | Geração em massa com download consolidado em arquivo `.zip` |
+| **Validação Online** | Página pública em `/validar/:codigo` para verificação de autenticidade |
+| **Exportar / Importar Config** | Salva todas as configurações do template em `.json` para reutilização futura |
+| **Suporte WhatsApp** | Botão flutuante de suporte direto no app |
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias
 
 ### Frontend
 - **React 19** + **Vite 8**
-- **Lucide-React** para ícones.
-- **Axios** para comunicação com API.
-- **CSS3 Vanilla** com design system customizado (Dark Navy & Gold).
+- **React Router DOM 7** — roteamento SPA
+- **Lucide React** — ícones
+- **Axios** — requisições HTTP
+- **CSS3 Vanilla** — design system customizado (Dark Navy & Gold)
 
 ### Backend
 - **Node.js** + **Express**
-- **Puppeteer**: Motor de renderização PDF de alta qualidade.
-- **ExcelJS**: Processamento de planilhas de dados.
-- **Archiver**: Gerenciamento de compressão ZIP.
-- **SQLite (better-sqlite3)**: Armazenamento local para validação de certificados.
+- **Puppeteer + Chromium** — renderização e exportação de PDF
+- **ExcelJS** — leitura de planilhas `.xlsx`
+- **Archiver** — geração de pacotes `.zip`
+- **SQLite (`better-sqlite3`)** — banco de dados para validação de certificados
+- **Helmet + express-rate-limit** — segurança e proteção de endpoints
+- **sanitize-html** — sanitização de entradas
 
 ---
 
@@ -54,39 +68,95 @@ Para rodar a aplicação localmente no Windows:
 
 ```text
 /
-├── backend/            # Servidor Express, Rotas e Lógica de PDF
-│   ├── assets/         # Logo, assinaturas e fundos enviados
-│   ├── controllers/    # Controladores da API
-│   ├── services/       # Serviços de Template, PDF e ZIP
-│   └── templates/      # Estrutura HTML/CSS do certificado
-├── frontend/           # Aplicação React
-│   ├── src/            # Componentes e Estilos
-│   └── public/         # Ativos estáticos
-├── install.bat         # Script de instalação automatizada
-└── start.bat           # Script de inicialização simultânea
+├── Dockerfile              # Build multi-stage para deploy em container
+├── .dockerignore           # Arquivos excluídos do build Docker
+├── docker-compose.yml      # Configuração para teste local com Docker
+├── backend/
+│   ├── assets/             # Logos, assinaturas e fundos enviados
+│   ├── config/             # Inicialização do banco SQLite
+│   ├── controllers/        # Controladores: upload, certificate, validation
+│   ├── data/               # Banco de dados SQLite (gerado em runtime)
+│   ├── outputs/            # PDFs e ZIPs gerados
+│   ├── services/           # PDF, Template, Excel, ZIP
+│   ├── templates/          # HTML/CSS do certificado
+│   ├── uploads/            # Planilhas enviadas temporariamente
+│   └── server.js           # Entry point Express
+├── frontend/
+│   ├── src/
+│   │   ├── components/     # FileUpload, TemplateEditor, RichTextEditor, Header...
+│   │   ├── App.jsx         # Máquina de estados principal (5 etapas)
+│   │   └── index.css       # Design system global
+│   └── vite.config.js
+├── install.bat             # Instalação automatizada (Windows)
+└── start.bat               # Inicialização simultanea frontend + backend
 ```
 
 ---
 
-## 📌 Nomenclatura de Arquivos
+## 🔄 Fluxo da Aplicação
 
-Para facilitar a identificação, os PDFs são nomeados automaticamente seguindo o padrão:
-`[nome_aluno]_[codigo_unico].pdf`
+```
+[1. Upload Excel] → [2. Pré-visualização de Dados] → [3. Editor de Template]
+       → [4. Geração de PDFs] → [5. Download ZIP]
+```
 
-Exemplo: `humberto_ATDFP-RFQT.pdf`
+Cada etapa é gerenciada pelo `App.jsx` como uma máquina de estados simples.
 
 ---
 
-## 🔐 Segurança e Performance
+## 📌 Padrão de Nomenclatura dos PDFs
 
-- **Windows Compatibility**: Fix de erro `0x80004005` integrado na geração de ZIP.
-- **Rate Limiting**: Proteção básica de endpoints no backend.
-- **Sanitização**: Filtro de nomes e variáveis para evitar problemas no sistema de arquivos.
+```
+[nome_do_aluno]_[codigo_unico].pdf
+Exemplo: humberto_ATDFP-RFQT.pdf
+```
+
+---
+
+## 🐳 Deploy (Easypanel / Docker)
+
+A aplicação é distribuída como um **único container** (frontend buildado dentro do backend):
+
+```bash
+# Testar localmente com Docker
+docker compose up --build
+
+# Acesse: http://localhost:3001
+```
+
+### Configuração Easypanel
+
+| Campo | Valor |
+|---|---|
+| Build Method | Dockerfile |
+| Port | `3001` |
+
+**Volumes obrigatórios** (para persistência de dados):
+
+| Nome | Caminho no Container |
+|---|---|
+| `cert-uploads` | `/app/backend/uploads` |
+| `cert-outputs` | `/app/backend/outputs` |
+| `cert-assets` | `/app/backend/assets` |
+| `cert-data` | `/app/backend/data` |
+
+> [!IMPORTANT]
+> Sem os volumes, certificados gerados, imagens enviadas e o banco de dados serão **perdidos** ao reiniciar o container.
+
+---
+
+## 🔐 Segurança
+
+- **Rate Limiting** — proteção de endpoints de geração
+- **Helmet** — headers HTTP de segurança
+- **sanitize-html** — sanitização de entradas do usuário
+- **CORS** — configurável via variável de ambiente `FRONTEND_URL`
 
 ---
 
 ## 👨‍💻 Desenvolvedor
 
-Este projeto foi desenvolvido por **Humberto Moura Neto**.
+Desenvolvido por **Humberto Moura Neto**  
+📞 Suporte: [WhatsApp](https://wa.me/5554991680204)
 
-&copy; 2026 - Todos os direitos reservados.
+&copy; 2026 — Todos os direitos reservados.
