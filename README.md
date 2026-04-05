@@ -1,162 +1,93 @@
 # 🎓 Gerador de Certificados Pro
 
-Uma aplicação completa de ponta a ponta para geração automatizada de certificados em PDF a partir de planilhas Excel. Ideal para cursos, workshops e eventos educacionais.
+Uma plataforma sofisticada e robusta para automação de certificados de alta qualidade. Transforme planilhas Excel em documentos PDF profissionais com QR Code, validação em tempo real e um sistema de design premium.
 
-[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20SQLite-blue)](https://github.com/humbertomouraneto) [![Docker](https://img.shields.io/badge/Deploy-Docker%20%7C%20Easypanel-2496ED?logo=docker)](https://easypanel.io)
+[![Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node.js%20%7C%20SQLite-blue?style=for-the-badge)](https://github.com/humbertomouraneto) 
+[![Docker](https://img.shields.io/badge/Deploy-Docker%20%7C%20Easypanel-2496ED?style=for-the-badge&logo=docker)](https://easypanel.io)
 
 ---
 
-## 🚀 Início Rápido (Desenvolvimento Local — Windows)
+## 🚀 Início Rápido (Desenvolvimento Local)
 
+Para rodar em sua máquina Windows:
+
+```powershell
+# 1. Instalação Completa
+./install.bat
+
+# 2. Iniciar Aplicação (Frontend + Backend)
+./start.bat
+```
+
+| Serviço | URL | Status |
+| :--- | :--- | :--- |
+| **Painel Administrativo** | `http://localhost:5173` | 🟢 Online |
+| **API do Sistema** | `http://localhost:3001` | 🟢 Online |
+
+---
+
+## ✨ Funcionalidades "Pro"
+
+| Recurso | Excelência Técnica |
+| :--- | :--- |
+| **Inteligência Excel** | Mapeamento dinâmico e inteligente de colunas (Nome, CPF, Curso, CH, Data). |
+| **Design System Custom** | Paleta *Dark Navy & Gold* para uma estética premium e corporativa. |
+| **Tipografia Granular** | Fontes **Playfair Display**, **Inter** e **Arial** com pesos variando de 300 a 800. |
+| **Rich Text Editor** | Edição visual para o conteúdo programático com suporte a HTML e listas. |
+| **QR Code Dinâmico** | Geração automática de QR Code único para validação de autenticidade. |
+| **Config Engine** | Sistema de **Exportar/Importar Configuração** via JSON para salvar seus templates. |
+| **Suporte Ágil** | Botões de suporte WhatsApp integrados diretamente na interface. |
+| **Batch Processing** | Geração assíncrona com processamento de ZIP otimizado para Windows. |
+
+---
+
+## 🐳 Produção & Deploy (Docker)
+
+A aplicação está preparada para deploy em containers, ideal para **Easypanel** ou qualquer ambiente Docker.
+
+### 🧪 Teste Local com Docker
 ```bash
-# 1. Instalar dependências (frontend e backend)
-install.bat
-
-# 2. Iniciar a aplicação
-start.bat
-```
-
-| Serviço | URL |
-|---|---|
-| Frontend (React) | `http://localhost:5173` |
-| Backend (API) | `http://localhost:3001` |
-
-> [!TIP]
-> Acesso via **rede local** (celular/outro PC): o Vite está configurado com `--host`. Utilize o IP exibido no terminal do Frontend.
-
----
-
-## ✨ Funcionalidades
-
-| Recurso | Descrição |
-|:---|:---|
-| **Upload Excel** | Suporte a `.xlsx` com mapeamento dinâmico de colunas (Nome, CPF, Curso, Carga Horária, Data) |
-| **Editor Visual** | Personalização completa: cores, fontes, peso tipográfico, logos, assinatura e fundo |
-| **Tipografia Avançada** | Suporte a **Playfair Display**, **Inter**, **Arial** com controle de peso (300–800) para títulos e corpo |
-| **Nome do Aluno Opcional** | Toggle para exibir ou ocultar o nome em destaque no certificado |
-| **Editor de Conteúdo** | Mini rich-text editor para o verso do certificado (negrito, itálico, listas) |
-| **Preview em Tempo Real** | Visualização HTML do certificado antes da geração em PDF |
-| **QR Code & Tracking** | Código único por certificado com QR Code embutido para validação online |
-| **Download em Lote** | Geração em massa com download consolidado em arquivo `.zip` |
-| **Validação Online** | Página pública em `/validar/:codigo` para verificação de autenticidade |
-| **Exportar / Importar Config** | Salva todas as configurações do template em `.json` para reutilização futura |
-| **Suporte WhatsApp** | Botão flutuante de suporte direto no app |
-
----
-
-## 🛠️ Tecnologias
-
-### Frontend
-- **React 19** + **Vite 8**
-- **React Router DOM 7** — roteamento SPA
-- **Lucide React** — ícones
-- **Axios** — requisições HTTP
-- **CSS3 Vanilla** — design system customizado (Dark Navy & Gold)
-
-### Backend
-- **Node.js** + **Express**
-- **Puppeteer + Chromium** — renderização e exportação de PDF
-- **ExcelJS** — leitura de planilhas `.xlsx`
-- **Archiver** — geração de pacotes `.zip`
-- **SQLite (`better-sqlite3`)** — banco de dados para validação de certificados
-- **Helmet + express-rate-limit** — segurança e proteção de endpoints
-- **sanitize-html** — sanitização de entradas
-
----
-
-## 📁 Estrutura de Pastas
-
-```text
-/
-├── Dockerfile              # Build multi-stage para deploy em container
-├── .dockerignore           # Arquivos excluídos do build Docker
-├── docker-compose.yml      # Configuração para teste local com Docker
-├── backend/
-│   ├── assets/             # Logos, assinaturas e fundos enviados
-│   ├── config/             # Inicialização do banco SQLite
-│   ├── controllers/        # Controladores: upload, certificate, validation
-│   ├── data/               # Banco de dados SQLite (gerado em runtime)
-│   ├── outputs/            # PDFs e ZIPs gerados
-│   ├── services/           # PDF, Template, Excel, ZIP
-│   ├── templates/          # HTML/CSS do certificado
-│   ├── uploads/            # Planilhas enviadas temporariamente
-│   └── server.js           # Entry point Express
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # FileUpload, TemplateEditor, RichTextEditor, Header...
-│   │   ├── App.jsx         # Máquina de estados principal (5 etapas)
-│   │   └── index.css       # Design system global
-│   └── vite.config.js
-├── install.bat             # Instalação automatizada (Windows)
-└── start.bat               # Inicialização simultanea frontend + backend
-```
-
----
-
-## 🔄 Fluxo da Aplicação
-
-```
-[1. Upload Excel] → [2. Pré-visualização de Dados] → [3. Editor de Template]
-       → [4. Geração de PDFs] → [5. Download ZIP]
-```
-
-Cada etapa é gerenciada pelo `App.jsx` como uma máquina de estados simples.
-
----
-
-## 📌 Padrão de Nomenclatura dos PDFs
-
-```
-[nome_do_aluno]_[codigo_unico].pdf
-Exemplo: humberto_ATDFP-RFQT.pdf
-```
-
----
-
-## 🐳 Deploy (Easypanel / Docker)
-
-A aplicação é distribuída como um **único container** (frontend buildado dentro do backend):
-
-```bash
-# Testar localmente com Docker
 docker compose up --build
-
-# Acesse: http://localhost:3001
 ```
 
-### Configuração Easypanel
+### 📋 Configuração de Volumes (Essencial)
+Certifique-se de mapear os seguintes volumes para garantir a persistência:
 
-| Campo | Valor |
-|---|---|
-| Build Method | Dockerfile |
-| Port | `3001` |
+- `cert-uploads`: `/app/backend/uploads` (Planilhas temporárias)
+- `cert-outputs`: `/app/backend/outputs` (Certificados e ZIPs gerados)
+- `cert-assets`: `/app/backend/assets` (Logos, fundos e assinaturas)
+- `cert-data`: `/app/backend/data` (Banco de dados de validação SQLite)
 
-**Volumes obrigatórios** (para persistência de dados):
+### 🔧 Solução de Problemas (Troubleshooting)
 
-| Nome | Caminho no Container |
-|---|---|
-| `cert-uploads` | `/app/backend/uploads` |
-| `cert-outputs` | `/app/backend/outputs` |
-| `cert-assets` | `/app/backend/assets` |
-| `cert-data` | `/app/backend/data` |
-
-> [!IMPORTANT]
-> Sem os volumes, certificados gerados, imagens enviadas e o banco de dados serão **perdidos** ao reiniciar o container.
+**Erro: "Invalid ELF Header"**
+- **Causa**: Ocorre quando módulos nativos (como `better-sqlite3`) são copiados de um ambiente Windows para um container Linux.
+- **Solução**: O `Dockerfile` atual já realiza o build interno e o `.dockerignore` exclui os `node_modules` locais. Certifique-se de que o comando `git push` incluiu as últimas alterações do `.dockerignore`.
 
 ---
 
-## 🔐 Segurança
+## 🛠️ Stack Tecnológica
 
-- **Rate Limiting** — proteção de endpoints de geração
-- **Helmet** — headers HTTP de segurança
-- **sanitize-html** — sanitização de entradas do usuário
-- **CORS** — configurável via variável de ambiente `FRONTEND_URL`
+### Core
+- **Frontend**: React 19, Vite 8, React Router v7.
+- **Backend**: Node.js 20 (LTS), Express.
+- **Renderização**: Puppeteer (Chromium Headless) para PDFs pixel-perfect.
+- **Storage**: SQLite para rastreabilidade e validação ultrarrápida.
+
+### UX/UI
+- **Icons**: Lucide-React.
+- **Animation**: CSS Transições suaves e Pulse Effects.
+- **Colors**: Sistema HSL para contrastes perfeitos.
 
 ---
 
-## 👨‍💻 Desenvolvedor
+## 👨‍💻 Créditos & Suporte
 
-Desenvolvido por **Humberto Moura Neto**  
-📞 Suporte: [WhatsApp](https://wa.me/5554991680204)
+Desenvolvido com foco em performance e design por **Humberto Moura Neto**.
 
-&copy; 2026 — Todos os direitos reservados.
+Para suporte técnico ou customizações:
+- 📱 [Chamar no WhatsApp](https://wa.me/5554991680204)
+- 🌐 [LinkedIn](https://www.linkedin.com/in/humbertomouraneto/)
+
+---
+&copy; 2026 Gerador de Certificados Pro.

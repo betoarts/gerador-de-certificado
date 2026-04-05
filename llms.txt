@@ -7,21 +7,31 @@ Full-stack application for automated PDF certificate generation from Excel files
 - **Frontend**: React 19, Vite 8, React Router DOM 7, Lucide-React, Axios.
 - **Backend**: Node.js, Express, Puppeteer (PDF rendering), ExcelJS, Archiver, better-sqlite3.
 - **Styling**: CSS3 Vanilla (Custom Properties), HSL colors.
+- **Deploy**: Docker (Multi-stage), Easypanel ready.
+
+## Key Features
+- **Smart Excel Import**: Supports Name, CPF, Course, Date, and Workload mapping.
+- **Advanced Typography**: Playfair Display, Inter, and Arial fonts with font-weight control (300-800).
+- **Rich Text Editor**: Integrated tool for formatted course content on the back of the certificate.
+- **Export/Import Config**: JSON-based template state management for consistency across sessions.
+- **Live Preview**: Real-time rendering of changes using CSS variables and Puppeteer-ready HTML.
+- **Authentication**: Unique QR Code and alphanumeric validation via SQLite database.
 
 ## Key Components
 - `FileUpload.jsx`: Excel upload and validation.
 - `DataPreview.jsx`: List and filter imported records.
-- `TemplateEditor.jsx`: UI for certificate styling (colors, fonts, assets).
+- `TemplateEditor.jsx`: UI for certificate styling (colors, fonts, weights, assets).
+- `RichTextEditor.jsx`: HTML editor for backing content.
 - `GenerationProgress.jsx`: Async generation with progress tracking.
 - `DownloadPanel.jsx`: Logic for batch and individual PDF downloads.
-- `pdfService.js`: Core Puppeteer PDF rendering engine.
-- `zipService.js`: Robust ZIP creation for large batches (Windows-optimized).
 
 ## API Endpoints
 - `POST /api/upload`: Excel processing.
 - `POST /api/upload/assets`: Image management.
-- `POST /api/certificates/generate`: Bulk generation.
-- `GET /api/validate/:code`: Certificate authentication.
+- `POST /api/certificates/preview`: Real-time HTML preview.
+- `POST /api/certificates/generate`: Bulk generation (PDF + ZIP).
+- `GET /api/validate/:code`: Alphanumeric code authentication.
+- `GET /api/health`: Container health check.
 
 ## Scripts
 - `install.bat`: Full dependency install.
@@ -29,4 +39,5 @@ Full-stack application for automated PDF certificate generation from Excel files
 
 ## Design System
 - **Colors**: Deep Navy (#0a0e1a), Gold (#e8a838), Midnight (#1a1a2e).
-- **Typography**: Playfair Display (Titles), Inter (Body).
+- **Typography**: Playfair Display (Titles), Inter (Body), Arial (Alternative).
+- **UI**: Glassmorphism effects, pulse animations, responsive sidebars.
