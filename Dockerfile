@@ -5,11 +5,9 @@ FROM node:20-slim AS frontend-builder
 
 WORKDIR /app/frontend
 
-COPY frontend/package*.json ./
-RUN npm install
-
+# Copy source first, then install – ensures node_modules is always built in Linux
 COPY frontend/ ./
-RUN npm run build
+RUN npm install && npm run build
 
 # ─────────────────────────────────────────────
 # Stage 2 – Production image (backend + static)
@@ -50,6 +48,9 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     wget \
     ca-certificates \
+    python3 \
+    make \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 # Tell Puppeteer to use the system Chromium instead of downloading its own
@@ -58,14 +59,14 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app/backend
 
-COPY backend/package*.json ./
-RUN npm install --omit=dev
-
+# Copy source first, then install – native modules (better-sqlite3) compile for Linux here
 COPY backend/ ./
+RUN npm install --omit=dev
 
 # Copy built frontend into backend/public so Express serves it
 COPY --from=frontend-builder /app/frontend/dist ./public
 
+# Ensure runtime directories exist
 RUN mkdir -p uploads outputs assets data
 
 EXPOSE 3001
