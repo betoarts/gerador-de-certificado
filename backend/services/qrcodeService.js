@@ -1,6 +1,6 @@
 const QRCode = require('qrcode');
 
-const BASE_URL = process.env.VALIDATION_URL || 'http://localhost:5173';
+const BASE_URL = process.env.VALIDATION_URL || 'https://certats.servicestec.pro';
 
 async function generateQRCode(certificateCode) {
   const validationUrl = `${BASE_URL}/validar/${certificateCode}`;
